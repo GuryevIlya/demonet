@@ -34,7 +34,7 @@ public class CommonController {
     
     @RequestMapping(value="/", method = RequestMethod.GET)
     public  String start(HttpServletRequest request) throws IOException {
-      //  return "redirect:" + VK_AUTH_URL; 
+     //   return "redirect:" + VK_AUTH_URL; 
      //  return "newjsp";
      return "redirect:friendsPage";  
     }

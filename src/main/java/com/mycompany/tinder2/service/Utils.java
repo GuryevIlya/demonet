@@ -69,4 +69,42 @@ public class Utils {
         return result;
     
     }
+    
+    public static List<Integer> sortKeyByValueAndKey(Map<Integer, Double> map){
+        List<Map.Entry<Integer, Integer>> list = new LinkedList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>(){
+            @Override
+            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2){
+                if(o1.getValue() - o2.getValue() == 0){
+                    return o1.getKey() - o2.getKey();
+                }else{
+                    return  o2.getValue() - o1.getValue();
+                }
+            }
+        });
+
+        List<Integer> result = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : list)
+        {
+            result.add(entry.getKey());
+        }
+        return result;
+    
+    }
+    
+    
+    
+    
+    public static void main(String[] args){
+        Object o1 = new Integer(1);
+        Object o2 = new Integer(2);
+        
+        int t = 3;
+        
+        
+        Object o3 = new Double(1);
+        Object o4 = new Double(2);
+    
+        int r = 9;
+    }
 }

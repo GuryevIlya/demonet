@@ -87,30 +87,4 @@ public class VectorManager {
         
         return result;
     }
-    
-    private int scalarProduct(Map<String, Integer> vector1, Map<String, Integer> vector2){
-        int result = 0;
-        for (Map.Entry<String, Integer> entry : vector1.entrySet()) {
-            Integer val1 = entry.getValue();
-            Integer val2 = vector2.get(entry.getKey());
-            result += val1 * (val2 != null ? val2 : 1);
-            
-        }
-        
-        return result;
-    }
-    
-    private Double module(Map<String, Integer> vector){
-        int sumOfSquares = 0;
-        for (Map.Entry<String, Integer> entry : vector.entrySet()) {
-            sumOfSquares += entry.getValue() * entry.getValue();
-        }
-        
-        return Math.sqrt(sumOfSquares);
-    
-    }
-    
-    public Double cosSim(Map<String, Integer> vector1, Map<String, Integer> vector2){
-        return scalarProduct(vector1, vector2)/(module(vector1) * module(vector2));
-    }
 }

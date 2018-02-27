@@ -89,7 +89,8 @@
     <button ng-click="loadMoreUsers()" id="more-button" type="button" style="display: none"></button>
     <select ng-change ="sortTypeChange()" ng-model = "sortType">
         <option value="number">По номеру аккаунта</option>
-        <option value="numberAndProximity">По удаленности и номеру аккаунта</option>
+        <option value="numberAndProximity">По количеству общих друзей и номеру аккаунта</option>
+        <option value="sim">По схожести</option>
     </select>
     <div ng-repeat="user in users"> 
         <div>

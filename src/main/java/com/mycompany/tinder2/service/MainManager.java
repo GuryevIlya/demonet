@@ -23,9 +23,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class MainManager {
     @Autowired
-    UserManager userManager = new UserManager();
+    private UserManager userManager;
     @Autowired
-    LinkManager linkManager;
+    private LinkManager linkManager;
+    @Autowired
+    private CompatibilityManager compatibilityManager;
+    @Autowired 
+    private LoginManager loginManager;
     
     public List<User> friends(Integer userId, int offset, int count, String sortType) throws IOException, InterruptedException{
        Map<Integer, Integer> allFriends = new HashMap<Integer, Integer>();
@@ -43,7 +47,7 @@ public class MainManager {
        
        if(sortType.equals("numberAndProximity")){
            sortedFriends = Utils.sortKeyByValueAndKey(allFriends);
-       }else{
+       }else if(sortType.equals("number")){
            sortedFriends = new ArrayList<Integer>(allFriends.values());
            Collections.sort(sortedFriends, new Comparator<Integer>() {
                                             @Override
@@ -52,6 +56,16 @@ public class MainManager {
                                             }
                                         }
                             );
+       }else if(sortType.equals("compatibility")){
+           Map<Integer, Double> user2compb  = new HashMap<Integer, Double>();
+           
+           for (Map.Entry<Integer, Integer> entry : allFriends.entrySet()) {
+               user2compb.put(entry.getKey(), compatibilityManager.getCompatibility(loginManager.getVkId(), entry.getKey()));
+           }
+           
+           
+       }else{
+           sortedFriends = new ArrayList<Integer>(allFriends.values()); 
        }
        
        

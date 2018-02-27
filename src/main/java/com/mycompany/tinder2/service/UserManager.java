@@ -150,7 +150,7 @@ public class UserManager {
     }
     
     
-    private Map<String, Integer> vector(Integer userId) throws IOException, InterruptedException{
+    public Map<String, Integer> vector(Integer userId) throws IOException, InterruptedException{
         if(user2vector.containsKey(userId)){
            return user2vector.get(userId); 
         }
