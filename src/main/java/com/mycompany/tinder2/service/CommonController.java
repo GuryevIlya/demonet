@@ -1,7 +1,7 @@
 package com.mycompany.tinder2.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.tinder2.model.User;
+import com.mycompany.tinder2.model.vk.User;
 import com.mycompany.tinder2.model.pages.FriendsPage;
 import java.io.IOException;
 import static java.time.Clock.offset;
@@ -28,15 +28,21 @@ public class CommonController {
 //    @Autowired
 //    FriendsPage friendsPage;
     @Autowired
+    CompatibilityManager compatibilityManager; 
+    @Autowired
     MainManager mainManager;
+    @Autowired
+    LinkManager linkManager;
     
     private String VK_AUTH_URL = "https://oauth.vk.com/authorize?client_id=6318506&display=page&redirect_uri=http://tinder2.com:8080/Tinder2/access_token?&scope=friends&response_type=code&v=5.52";
     
     @RequestMapping(value="/", method = RequestMethod.GET)
-    public  String start(HttpServletRequest request) throws IOException {
-     //   return "redirect:" + VK_AUTH_URL; 
+    public  String start(HttpServletRequest request) throws IOException, InterruptedException {
+       // compatibilityManager.processCommonFriendsCount(loginManager.getVkId());
+       compatibilityManager.processCompatibility(loginManager.getVkId(), linkManager.friendsOfFriends(loginManager.getVkId()).keySet());
+     //  return "redirect:" + VK_AUTH_URL; 
      //  return "newjsp";
-     return "redirect:friendsPage";  
+        return "redirect:friendsPage";  
     }
     
     @RequestMapping(value="/code", method = RequestMethod.GET)
@@ -48,7 +54,7 @@ public class CommonController {
     @RequestMapping(value="/access_token", method = RequestMethod.GET)
     public String accessToken(ModelMap model,
                            @RequestParam(value = "code", defaultValue = "") String code) throws IOException, Exception {
-       String[] vkIdAndAccessToken =  vkDAO.idAndAccessToken(code);
+       String[] vkIdAndAccessToken =  vkDAO.idAndAccessToken("3612dd12be8a64efbf");
        String[] idAndPassport = loginManager.getIdAndPassport(vkIdAndAccessToken[0]);
        
        if(idAndPassport[0] == null){

@@ -1,18 +1,43 @@
 package com.mycompany.tinder2.service;
 
-import com.mycompany.tinder2.model.Group;
-import com.mycompany.tinder2.model.User;
+import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
+import com.mycompany.tinder2.model.vk.Group;
+import com.mycompany.tinder2.model.vk.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author delet
  */
+@Component
 public class VectorManager {
+    private static List<String> toWords(String text){
+        if(text.equals("")){
+            text = "слово тест";
+        }
+        String withOutInvisibleChar = text.replace("\n", " ")
+                                          .replace("\t", " ")
+                                          .replace(".", " ")
+                                          .replace(",", " ")
+                                          .replace("?", " ")
+                                          .replace(":", " ")
+                                          .replace("!", " ");
+        
+        List<String> list = new ArrayList<String>();
+        list.add("dfdfdsf");
+        list.add("dfdf");
+        
+        List<String> result  = MorphoAnalyst.normalize(list/*Arrays.asList(withOutInvisibleChar.split(" "))*/);
+        return  result;
+    }
+    
+    
+    
     public static Map<String, Integer> text2vector(String text){
         Map<String, Integer> result = new HashMap<String, Integer>();
         

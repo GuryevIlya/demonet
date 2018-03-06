@@ -12,32 +12,7 @@ import java.util.Map;
  * @author delet
  */
 public class VectorUtils {
-    private static List<String> toWords(String text){
-        String withOutInvisibleChar = text.replace("\n", " ")
-                                          .replace("\t", " ")
-                                          .replace(".", " ")
-                                          .replace(",", " ")
-                                          .replace("?", " ")
-                                          .replace(":", " ")
-                                          .replace("!", " ");
-        
-        return MorphoAnalyst.normalize(Arrays.asList(withOutInvisibleChar.split(" ")));
-    }
     
-    public static Map<String, Integer> text2vector(String text){
-        Map<String, Integer> result = new HashMap<String, Integer>();
-        
-        List<String> words = toWords(text);
-        for(String word : words){
-            if(result.containsKey(word)){
-                result.put(word, result.get(word) + 1);
-            }else{
-                result.put(word, 1);
-            }
-        }
-        
-        return result;
-    }
     
     public Map<String, Integer> sumVectors(List<Map<String, Integer>> vectors){
         Map<String, Integer> result = new HashMap<String, Integer>();
@@ -116,4 +91,10 @@ public class VectorUtils {
     }
     
     
+    public static void main(String[] args){
+        String text = "слово тест";
+        System.out.print(text);
+        List<String>  list = MorphoAnalyst.normalize(Arrays.asList(text.split(" ")));
+        int t = 5;
+    }
 }

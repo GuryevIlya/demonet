@@ -1,6 +1,6 @@
 package com.mycompany.tinder2.service;
 
-import com.mycompany.tinder2.model.Group;
+import com.mycompany.tinder2.model.vk.Group;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

@@ -2,12 +2,12 @@ package com.mycompany.tinder2.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.tinder2.model.Couple;
-import com.mycompany.tinder2.model.Group;
-import com.mycompany.tinder2.model.GroupResponce;
-import com.mycompany.tinder2.model.Items;
-import com.mycompany.tinder2.model.Response;
-import com.mycompany.tinder2.model.User;
+import com.mycompany.tinder2.model.vk.Couple;
+import com.mycompany.tinder2.model.vk.Group;
+import com.mycompany.tinder2.model.vk.GroupResponce;
+import com.mycompany.tinder2.model.vk.Items;
+import com.mycompany.tinder2.model.vk.Response;
+import com.mycompany.tinder2.model.vk.User;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;

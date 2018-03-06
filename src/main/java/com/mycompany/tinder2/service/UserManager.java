@@ -2,10 +2,10 @@ package com.mycompany.tinder2.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.tinder2.model.User;
-import com.mycompany.tinder2.model.UserResponse;
-import com.mycompany.tinder2.model.VKResponse;
-import com.mycompany.tinder2.model.WallPost;
+import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.vk.UserResponse;
+import com.mycompany.tinder2.model.vk.VKResponse;
+import com.mycompany.tinder2.model.vk.WallPost;
 import static com.mycompany.tinder2.service.Utils.getRequest;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import org.apache.commons.io.FileUtils;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,23 +32,40 @@ import org.springframework.stereotype.Component;
 public class UserManager {
    @Autowired
    LoginManager loginManager;
+   @Autowired
+   VectorManager vectorManager;
    private Map<Integer, Map<String, Integer>> user2vector = new HashMap<Integer, Map<String, Integer>>();
    private Map<Integer, User> id2user = new HashMap<Integer, User>();
+   private Set<Integer> processedUsers = new HashSet<Integer>();
     
     @PostConstruct
     public void init() {
         try{
             ObjectMapper objectMapper = new ObjectMapper();
             
+            File processedUsersFile = new File("C:\\demonetData\\processedUsers.txt");
+            if(processedUsersFile.exists()){
+                for(String userId : FileUtils.readLines(processedUsersFile, "utf-8")){
+                    processedUsers.add(toInt(userId));
+                }
+            }
+            
             File user2vectorFile = new File("C:\\demonetData\\user2vector.txt");
             if(user2vectorFile.exists()){
-                user2vector = objectMapper.readValue(user2vectorFile, new TypeReference<Map<Integer, Map<String, Integer>>>(){});
+                for(String line : FileUtils.readLines(user2vectorFile, "utf-8")){
+                    String[] parts = line.split("\t");
+                    user2vector.put(toInt(parts[0]), (Map<String, Integer>) objectMapper.readValue(parts[1], new TypeReference<Map<String, Integer>>(){}));
+                }
             }
             
             File id2userFile = new File("C:\\demonetData\\id2user.txt");
             if(id2userFile.exists()){
-                id2user = objectMapper.readValue(id2userFile, new TypeReference<Map<Integer, User>>(){});
+                for(String line : FileUtils.readLines(id2userFile, "utf-8")){
+                    String[] parts = line.split("\t");
+                    id2user.put(toInt(parts[0]), (User) objectMapper.readValue(parts[1], User.class));
+                }
             }
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -69,7 +87,7 @@ public class UserManager {
         VKResponse<WallPost> response = (VKResponse<WallPost>) objectMapper.readValue(request, new TypeReference<VKResponse<WallPost>>(){});
        
         if(response == null || response.getResponse() == null){
-            System.err.println("");
+            return new ArrayList<WallPost>();
         }
         
         return response.getResponse().getItems();
@@ -88,13 +106,13 @@ public class UserManager {
     private Map<String, Integer> wallVector(Integer userId) throws IOException, InterruptedException{
         Map<String, Integer> result = new HashMap<String, Integer>();
         
-        int postCount = 0;
-        for(int i = 0; i < 10000; i+=100){
-            Thread.currentThread().sleep(1000);
+          int postCount = 0;
+          for(int i = 0; i < 200; i+=100){
+            Thread.currentThread().sleep(300);
             List<WallPost> posts = wallPosts(userId, i, 100);
             for(WallPost post : posts){
                 postCount++;
-                result = VectorUtils.sumVectors(result, VectorUtils.text2vector(post.getText()));
+                result = vectorManager.sumVectors(result, vectorManager.text2vector(post.getText()));
             }
             if(posts.size() < 100){
                 break;
@@ -143,8 +161,7 @@ public class UserManager {
         User result = (User) userResponse.getResponse().get(0);
         
         id2user.put(userId, result);
-        objectMapper = new ObjectMapper();
-        objectMapper.writeValue(new File("C:\\demonetData\\id2user.txt"), id2user);
+        FileUtils.write(new File("C:\\demonetData\\id2user.txt"), userId + "\t" + objectMapper.writeValueAsString(result) + "\n", "utf-8", true);
         
         return result;
     }
@@ -159,7 +176,7 @@ public class UserManager {
         user2vector.put(userId, result);
         
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(new File("C:\\demonetData\\user2vector.txt"), user2vector);
+        FileUtils.write(new File("C:\\demonetData\\user2vector.txt"), userId + "\t" + objectMapper.writeValueAsString(result) + "\n", "UTF-8", true);
         
         return result;
     }

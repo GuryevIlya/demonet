@@ -1,6 +1,6 @@
 package com.mycompany.tinder2.service;
 
-import com.mycompany.tinder2.model.User;
+import com.mycompany.tinder2.model.vk.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

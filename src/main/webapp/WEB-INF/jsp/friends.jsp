@@ -87,6 +87,9 @@
 </head>
 <body ng-controller="AppController">
     <button ng-click="loadMoreUsers()" id="more-button" type="button" style="display: none"></button>
+    <div style = "width:100%;height:50px;">
+        <div>demonet</div>
+    </div>
     <select ng-change ="sortTypeChange()" ng-model = "sortType">
         <option value="number">По номеру аккаунта</option>
         <option value="numberAndProximity">По количеству общих друзей и номеру аккаунта</option>

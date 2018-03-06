@@ -1,6 +1,7 @@
 package com.mycompany.tinder2.service;
 
-import com.mycompany.tinder2.model.User;
+import com.mycompany.tinder2.model.internal.Stat;
+import com.mycompany.tinder2.model.vk.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,42 +34,46 @@ public class MainManager {
     private LoginManager loginManager;
     
     public List<User> friends(Integer userId, int offset, int count, String sortType) throws IOException, InterruptedException{
-       Map<Integer, Integer> allFriends = new HashMap<Integer, Integer>();
-       for(Integer id : linkManager.friends(userId)){
-           allFriends.put(id, Integer.MAX_VALUE);
-       }
+       Map<Integer, Stat> user2Stat = compatibilityManager.getUser2Stat(userId, linkManager.friendsOfFriends(userId).keySet());
        
-       for (Map.Entry<Integer, Integer> entry : linkManager.friendsOfFriends(userId).entrySet()){
-           if(!allFriends.containsKey(entry.getKey())){
-              allFriends.put(entry.getKey(), entry.getValue()); 
-           }
-       }
-       
-       List<Integer> sortedFriends;
-       
+       List<Integer> sortedFriends = new ArrayList<Integer>();
+       List<Map.Entry<Integer, Stat>> list = new LinkedList<>(user2Stat.entrySet());
        if(sortType.equals("numberAndProximity")){
-           sortedFriends = Utils.sortKeyByValueAndKey(allFriends);
-       }else if(sortType.equals("number")){
-           sortedFriends = new ArrayList<Integer>(allFriends.values());
-           Collections.sort(sortedFriends, new Comparator<Integer>() {
-                                            @Override
-                                            public int compare(Integer o1, Integer o2) {
-                                                return o1 - o2;
-                                            }
-                                        }
-                            );
-       }else if(sortType.equals("compatibility")){
-           Map<Integer, Double> user2compb  = new HashMap<Integer, Double>();
-           
-           for (Map.Entry<Integer, Integer> entry : allFriends.entrySet()) {
-               user2compb.put(entry.getKey(), compatibilityManager.getCompatibility(loginManager.getVkId(), entry.getKey()));
-           }
-           
-           
-       }else{
-           sortedFriends = new ArrayList<Integer>(allFriends.values()); 
+           Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
+               @Override
+               public int compare(Map.Entry<Integer, Stat> o1, Map.Entry<Integer, Stat> o2){
+                   if(o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount() == 0){
+                       return o1.getKey() - o2.getKey();
+                   }else{
+                       return  o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount();
+                   }
+               }
+            });
+        }else if(sortType.equals("number")){
+           Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
+               @Override
+               public int compare(Map.Entry<Integer, Stat> o1, Map.Entry<Integer, Stat> o2){
+                   return o1.getKey() - o2.getKey();
+               }
+            });
+
+            
+       }else if(sortType.equals("compatibilityAndNumber")){
+           Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
+               @Override
+               public int compare(Map.Entry<Integer, Stat> o1, Map.Entry<Integer, Stat> o2){
+                   if(o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount() == 0){
+                       return o1.getKey() - o2.getKey();
+                   }else{
+                       return  o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount();
+                   }
+               }
+            });
        }
        
+       for (Map.Entry<Integer, Stat> entry : list){
+            sortedFriends.add(entry.getKey());
+       }
        
        if(count == -1){
            return users(sortedFriends);
@@ -79,8 +85,6 @@ public class MainManager {
                 resultIds.add(sortedFriends.get(i));
             }
        }
-       
-       
        return users(resultIds);
    }
     

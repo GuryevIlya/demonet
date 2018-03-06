@@ -2,11 +2,11 @@ package com.mycompany.tinder2.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.tinder2.model.Group;
-import com.mycompany.tinder2.model.Items;
-import com.mycompany.tinder2.model.User;
-import com.mycompany.tinder2.model.VKResponse;
-import com.mycompany.tinder2.model.WallPost;
+import com.mycompany.tinder2.model.vk.Group;
+import com.mycompany.tinder2.model.vk.Items;
+import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.vk.VKResponse;
+import com.mycompany.tinder2.model.vk.WallPost;
 import static com.mycompany.tinder2.service.Utils.getRequest;
 import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.File;
@@ -74,7 +74,7 @@ public class LinkManager {
    }
    
    
-   public Map<Integer, Integer> friendsOfFriends(Integer userId) throws IOException, InterruptedException{
+    public Map<Integer, Integer> friendsOfFriends(Integer userId) throws IOException, InterruptedException{
        Map<Integer, Integer> result = new HashMap<Integer, Integer>();
        Collection<Integer> friends = friends(userId);
        
@@ -97,7 +97,7 @@ public class LinkManager {
     
     
     public Set<Integer> groups(Integer userId) throws IOException{
-        String accessToken = "383d091b865ddceebdfaee0cc210432ca4c4d6e93ad8b81b174c9cc03218ed094d9a63f52ec365b42c991";
+        String accessToken = "80716c77a5ae0c41d321c4c3d765afe749354bdeaec257421ecbefb7319f21378abbba3e3c682de2faf5a";
         
         String url = "https://api.vk.com/method/groups.get?v=5.52&access_token=" + accessToken + "&user_id=" + userId + "&fields=description";
         String responseJSON = Utils.getRequest(url);

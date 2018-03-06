@@ -3,23 +3,28 @@ package com.mycompany.tinder2.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.tinder2.model.Group;
-import com.mycompany.tinder2.model.GroupResponce;
-import com.mycompany.tinder2.model.Response;
-import com.mycompany.tinder2.model.User;
-import com.mycompany.tinder2.model.VKResponse;
-import com.mycompany.tinder2.model.WallPost;
+import com.mycompany.tinder2.model.vk.Group;
+import com.mycompany.tinder2.model.vk.GroupResponce;
+import com.mycompany.tinder2.model.vk.Response;
+import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.vk.VKResponse;
+import com.mycompany.tinder2.model.vk.WallPost;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author delet
  */
+@Component
 public class GroupManager {
+    @Autowired
+    VectorManager vectorManager;
     
     private List<WallPost> wallPosts(String groupId, int offset, int count) throws IOException{
         String accessToken = "39bad9ad33a23248bd7665951ea285c69d0abd05d94f21123255c61ff2651dde35f6901bd1ef02a93a941";
@@ -44,7 +49,7 @@ public class GroupManager {
         for(int i = 0; i < 1000; i+=100){
             List<WallPost> posts = wallPosts(groupId, i, 100);
             for(WallPost post : posts){
-                result = VectorUtils.sumVectors(result, VectorUtils.text2vector(post.getText()));
+                result = VectorUtils.sumVectors(result, vectorManager.text2vector(post.getText()));
             }
             if(posts.size() < 100){
                 break;
@@ -65,7 +70,7 @@ public class GroupManager {
         ObjectMapper objectMapper = new ObjectMapper();
         GroupResponce response = (GroupResponce) objectMapper.readValue(request, GroupResponce.class);
         
-        return VectorUtils.text2vector(response.getResponse().get(0).getDescription());
+        return vectorManager.text2vector(response.getResponse().get(0).getDescription());
     }
     
     
