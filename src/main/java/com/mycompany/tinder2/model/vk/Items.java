@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class Items {
     @JsonIgnore public int error;
-    private List<Group> items;
+    private List<GroupVK> items;
 
-    public List<Group> getItems() {
+    public List<GroupVK> getItems() {
         return items;
     }
 
-    public void setItems(List<Group> items) {
+    public void setItems(List<GroupVK> items) {
         this.items = items;
     }
 }

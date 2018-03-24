@@ -1,6 +1,6 @@
 package com.mycompany.tinder2.service;
 
-import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.vk.UserVK;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,8 +27,8 @@ public class CommonDAO {
     private static ResultSet rs;
     
     
-    public List<User> getUsers(List<String> ids){
-        List<User> result = new ArrayList<User>();
+    public List<UserVK> getUsers(List<String> ids){
+        List<UserVK> result = new ArrayList<UserVK>();
     
         String query = "select count(*) from users";
 
@@ -59,7 +59,7 @@ public class CommonDAO {
         return result;
     }
     
-    public void setUsers(List<User> users){
+    public void setUsers(List<UserVK> users){
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO demonet.users")
            .append("(id,")
@@ -73,7 +73,7 @@ public class CommonDAO {
            .append("deactivated)")
            .append("VALUES");
        
-        for(User user: users){
+        for(UserVK  user: users){
             sql.append("(")
                .append("'").append(user.getId()).append("'")
                .append(",").append("'").append(user.getFirstName()).append("'")
@@ -121,7 +121,7 @@ public class CommonDAO {
     
     public static void main(String[] args){
         CommonDAO cd = new CommonDAO();
-        cd.setUsers(new ArrayList<User>());
+        cd.setUsers(new ArrayList<UserVK>());
     }
     
 }

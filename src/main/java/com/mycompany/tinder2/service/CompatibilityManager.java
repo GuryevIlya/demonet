@@ -3,6 +3,7 @@ package com.mycompany.tinder2.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.tinder2.model.internal.Stat;
+import com.mycompany.tinder2.model.internal.UserVectors;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -105,10 +106,10 @@ public class CompatibilityManager {
         for(Integer friendId: friendsIds){
             Stat stat = stat(userId, friendId);
             if(stat.getCompatibility() == null){
-                Map<String, Integer> vector1 = userManager.vector(userId);
-                Map<String, Integer> vector2 = userManager.vector(friendId);
-                
-                stat.setCompatibility(VectorUtils.cosSim(vector1, vector2));
+//                Map<String, Integer> vector1 = userManager.vector(userId);
+//                Map<String, Integer> vector2 = userManager.vector(friendId);
+//                
+//                stat.setCompatibility(VectorUtils.cosSim(vector1, vector2));
             }
             
             result.put(friendId, stat);
@@ -117,22 +118,24 @@ public class CompatibilityManager {
         return result;
     }
     
-    
-    
-    
     public void addCommonFriendsCount(Integer userId1, Integer userId2, Integer count){
         stat(userId1, userId2).setCommonFriendCount(count);
     }
 
-
+    public Double compatibility(UserVectors user1, UserVectors user2){
+       // Double result = VectorUtils.cosSim(user1.getWallVector(), user2.getWallVector());
+        Double result = 4.4;
+        return result;
+    }
+    
     public void processCompatibility(Integer userId, Collection<Integer> friendsIds) throws IOException, InterruptedException{
         for(Integer friendId: friendsIds){
             Stat stat = stat(userId, friendId);
             
-            Map<String, Integer> vector1 = userManager.vector(userId);
-            Map<String, Integer> vector2 = userManager.vector(friendId);
+            UserVectors user1 = userManager.user(userId);
+            UserVectors user2 = userManager.user(friendId);
 
-            Double compatibility = VectorUtils.cosSim(vector1, vector2);
+            Double compatibility  = compatibility(user1, user2);
             stat.setCompatibility(compatibility);
             
             FileUtils.write(new File("C:\\demonetData\\couple2Compatibility.txt"), coupleId(userId, friendId) + "\t" + compatibility + "\n", "UTF-8", true);

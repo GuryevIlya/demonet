@@ -10,6 +10,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="static/css/common.css">
+  <link rel="stylesheet" href="static/css/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css">
  
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
 
@@ -87,21 +89,65 @@
 </head>
 <body ng-controller="AppController">
     <button ng-click="loadMoreUsers()" id="more-button" type="button" style="display: none"></button>
-    <div style = "width:100%;height:50px;">
-        <div>demonet</div>
-    </div>
-    <select ng-change ="sortTypeChange()" ng-model = "sortType">
-        <option value="number">По номеру аккаунта</option>
-        <option value="numberAndProximity">По количеству общих друзей и номеру аккаунта</option>
-        <option value="sim">По схожести</option>
-    </select>
-    <div ng-repeat="user in users"> 
-        <div>
-            {{user.first_name}}&nbsp{{user.last_name}}
-        </div>
-        <div>
-            <img src="{{user.photo_100}}" >
+    <div style = "width:100%;box-sizing:border-box;height:50px;background-color:#29487d;color:white;font-family:Anton;padding: 0 250px;position:fixed;z-index:10000">
+        <div style = "max-width:1036px;margin:0 auto;height:50px;">
+            <span style = "font-size:25px;line-height: 50px;">demonet</span>
         </div>
     </div>
+    <div style = "width:1020px;margin: 0 auto;top:70px;position:relative;">
+        <div style = "display: inline-block;vertical-align: top;height:2000px;width: 150px;position:fixed;">
+            <div>
+                <div style = "padding:2px;">
+                    <i class="fa fa-heart" aria-hidden="true" style = "color:#285473;margin-right:5px;font-size: 18px;"></i>
+                    <span style = "font-family:sans-serif;font-size: 12.5px;color:black;">Симпатии</span>
+                    <span style = "font-family:sans-serif;font-size: 10.5px;font-weight: bold;">+5</span>
+                </div>
+                <div style = "padding:2px;">
+                    <i class="fa fa-heart" aria-hidden="true" style = "color:#9ab3c7;margin-right:5px;font-size: 15px;"></i>
+                    <span style = "font-family:sans-serif;font-size: 12.5px;color:#6a6a6a">Симпатии</span></span>
+                </div>
+                <div style = "padding:2px;">
+                    <i class="fa fa-diamond" aria-hidden="true" style = "color:#9ab3c7;margin-right:5px;font-size: 15px;"></i>
+                    <span style = "font-family:sans-serif;font-size: 12.5px;color:#6a6a6a">Симпатии</span></span>
+                </div>
+                <div style = "padding:2px;">
+                    <i class="fa fa-heart-o" aria-hidden="true" style = "color:#285473;margin-right:5px;font-size: 15px;"></i>
+                    <span style = "font-family:sans-serif;font-size: 12.5px;color:#6a6a6a">Симпатии</span></span>
+                </div>
+                <div style = "padding:2px;">
+                    <i class="fa fa-diamond" aria-hidden="true" style = "color:#285473;margin-right:5px;font-size: 15px;"></i>
+                    <span style = "font-family:sans-serif;font-size: 12.5px;color:#6a6a6a">Симпатии</span></span>
+                </div>
+                <div style = "padding:2px;">
+                    <i class="fa fa-cubes" aria-hidden="true" style = "color:#285473;margin-right:5px;font-size: 15px;"></i>
+                    <span style = "font-family:sans-serif;font-size: 12.5px;color:#6a6a6a">Расчеты</span></span>
+                </div>
+                <div style = "padding:2px;">
+                    <i class="fa fa-address-book-o" aria-hidden="true" style = "color:#285473;margin-right:5px;font-size: 15px;"></i>
+                    <span style = "font-family:sans-serif;font-size: 12.5px;color:#6a6a6a">Расчеты</span></span>
+                </div>
+            </div>    
+        </div>
+        <div style = "display: inline-block;vertical-align: top;height:3000px;width: 850px;margin-left: 150px;">
+            <div ng-repeat="user in users" style = "width:100%;background: white;"> 
+                <div>
+                    {{user.firstName}}&nbsp{{user.lastName}}
+                </div>
+                <div>
+                    <img src="{{user.photo}}" >
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<!--    <select ng-change ="sortTypeChange()" ng-model = "sortType">
+                <option value="number">По номеру аккаунта</option>
+                <option value="numberAndProximity">По количеству общих друзей и номеру аккаунта</option>
+                <option value="sim">По схожести</option>
+            </select>-->
+    
+    
+    
+    
 </body>
 </html>

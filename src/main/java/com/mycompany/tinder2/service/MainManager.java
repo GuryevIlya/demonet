@@ -1,7 +1,9 @@
 package com.mycompany.tinder2.service;
 
 import com.mycompany.tinder2.model.internal.Stat;
-import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.internal.UserVectors;
+import com.mycompany.tinder2.model.pages.User;
+import com.mycompany.tinder2.model.vk.UserVK;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +36,7 @@ public class MainManager {
     private LoginManager loginManager;
     
     public List<User> friends(Integer userId, int offset, int count, String sortType) throws IOException, InterruptedException{
-       Map<Integer, Stat> user2Stat = compatibilityManager.getUser2Stat(userId, linkManager.friendsOfFriends(userId).keySet());
+       Map<Integer, Stat> user2Stat = compatibilityManager.getUser2Stat(userId, linkManager.friends(userId));
        
        List<Integer> sortedFriends = new ArrayList<Integer>();
        List<Map.Entry<Integer, Stat>> list = new LinkedList<>(user2Stat.entrySet());
@@ -76,7 +78,7 @@ public class MainManager {
        }
        
        if(count == -1){
-           return users(sortedFriends);
+           return userManager.users(sortedFriends);
        }
        
        List<Integer> resultIds = new ArrayList<Integer>();
@@ -85,19 +87,19 @@ public class MainManager {
                 resultIds.add(sortedFriends.get(i));
             }
        }
-       return users(resultIds);
+       return userManager.users(resultIds);
    }
     
     
-    private List<User> users(List<Integer> ids) throws IOException, InterruptedException{
-        List<User> result = new ArrayList<User>();
-        
-        for(Integer id: ids){
-            result.add(userManager.user(id));
-        }
-        
-        return result;
-    }
+//    private List<UserVectors> users(List<Integer> ids) throws IOException, InterruptedException{
+//        List<UserVectors> result = new ArrayList<UserVectors>();
+//        
+//        for(Integer id: ids){
+//            result.add(userManager.user(id));
+//        }
+//        
+//        return result;
+//    }
 
     public static void main(String[] args) throws IOException, InterruptedException{
         System.out.print("hjhjj");

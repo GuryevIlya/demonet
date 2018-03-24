@@ -1,13 +1,15 @@
 package com.mycompany.tinder2.service;
 
 import com.github.stagirs.lingvo.morpho.MorphoAnalyst;
-import com.mycompany.tinder2.model.vk.Group;
-import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.vk.GroupVK;
+import com.mycompany.tinder2.model.vk.UserVK;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,9 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class VectorManager {
     private static List<String> toWords(String text){
-        if(text.equals("")){
-            text = "слово тест";
-        }
         String withOutInvisibleChar = text.replace("\n", " ")
                                           .replace("\t", " ")
                                           .replace(".", " ")
@@ -28,12 +27,9 @@ public class VectorManager {
                                           .replace(":", " ")
                                           .replace("!", " ");
         
-        List<String> list = new ArrayList<String>();
-        list.add("dfdfdsf");
-        list.add("dfdf");
+        MorphoAnalyst ma = new MorphoAnalyst();
         
-        List<String> result  = MorphoAnalyst.normalize(list/*Arrays.asList(withOutInvisibleChar.split(" "))*/);
-        return  result;
+        return  MorphoAnalyst.normalize(Arrays.asList(withOutInvisibleChar.split(" ")));
     }
     
     
@@ -41,8 +37,7 @@ public class VectorManager {
     public static Map<String, Integer> text2vector(String text){
         Map<String, Integer> result = new HashMap<String, Integer>();
         
-        text = text.replace("\t", " ");
-        String[] words = text.split(" ");
+        List<String> words = toWords(text);
         for(String word : words){
             if(result.containsKey(word)){
                 result.put(word, result.get(word) + 1);
@@ -87,7 +82,7 @@ public class VectorManager {
     }
     
     public static Map<String, Integer> sumVectors(Map<String, Integer> vector1, Map<String, Integer> vector2){
-        Map<String, Integer> result = new HashMap<String, Integer>();
+        Map<String, Integer> result = new TreeMap<String, Integer>();
         
         for (Map.Entry<String, Integer> entry : vector1.entrySet()) {
             Integer oldValue = result.get(entry.getKey());
@@ -111,5 +106,12 @@ public class VectorManager {
         }
         
         return result;
+    }
+    
+    public static void main(String[] args){
+        MorphoAnalyst ma = new MorphoAnalyst();
+        List<String> result = MorphoAnalyst.normalize(Arrays.asList("dfsd fds fsdfsd fsdfsd fdfd".split(" ")));
+        
+        int fdd = 3;
     }
 }

@@ -9,13 +9,13 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UserResponse {
-    public List<User> response;
+    public List<UserVK> response;
 
-    public List<User> getResponse() {
+    public List<UserVK> getResponse() {
         return response;
     }
 
-    public void setResponse(List<User> response) {
+    public void setResponse(List<UserVK> response) {
         this.response = response;
     }
     

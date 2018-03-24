@@ -3,11 +3,11 @@ package com.mycompany.tinder2.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.tinder2.model.vk.Couple;
-import com.mycompany.tinder2.model.vk.Group;
+import com.mycompany.tinder2.model.vk.GroupVK;
 import com.mycompany.tinder2.model.vk.GroupResponce;
 import com.mycompany.tinder2.model.vk.Items;
 import com.mycompany.tinder2.model.vk.Response;
-import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.vk.UserVK;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -192,7 +192,7 @@ public class VkDAO {
        return result;
    }
    
-   public List<User> friends(String access_token, String user_id, int offset, int count, String sortType) throws IOException{
+   public List<UserVK> friends(String access_token, String user_id, int offset, int count, String sortType) throws IOException{
        return users(friendIds(access_token, user_id, offset, count, sortType), access_token);
    }
    
@@ -221,8 +221,8 @@ public class VkDAO {
        return response.toString();
    }
    
-   private List<User> users(Collection<String> users, String access_token) throws IOException{
-       List<User> result = new ArrayList<User>();
+   private List<UserVK> users(Collection<String> users, String access_token) throws IOException{
+       List<UserVK> result = new ArrayList<UserVK>();
        
        List<String> part = new ArrayList<String>();
        for(String user : users){
@@ -258,8 +258,8 @@ public class VkDAO {
 //       return result;
 //   }
    
-   private List<User> usersPart(Collection<String> users, String access_token) throws IOException{
-       List<User> result = new ArrayList<User>();
+   private List<UserVK> usersPart(Collection<String> users, String access_token) throws IOException{
+       List<UserVK> result = new ArrayList<UserVK>();
        
 //       String url = "https://api.vk.com/method/users.get?v=5.52&access_token=" + access_token + "&user_ids=" + String.join(",", users) + "&fields=sex,maiden_name,relation,relation_partner,relation_pending";
 //       
@@ -332,7 +332,7 @@ public class VkDAO {
 //       return new User[2][4];
 //   }
    
-   public List<Group> userGroups(String userId, String access_token) throws IOException{
+   public List<GroupVK> userGroups(String userId, String access_token) throws IOException{
        String url = "https://api.vk.com/method/groups.get?v=5.52&access_token=" + access_token + "&user_id=" + userId + "&extended=1&fields=description";
        
        String request = getRequest(url);

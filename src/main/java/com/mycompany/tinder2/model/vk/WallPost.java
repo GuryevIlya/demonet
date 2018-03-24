@@ -3,6 +3,8 @@ package com.mycompany.tinder2.model.vk;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *
@@ -29,7 +31,8 @@ public class WallPost {
     private Object reposts;
     private Object views;
     private Object signer_id;
-    private Object copy_history;
+    @JsonProperty("copy_history")
+    private ArrayList<Map<String, Object>>  copyHistory;
     private Object geo;
     private Object can_delete;
     private Object can_pin;
@@ -154,12 +157,12 @@ public class WallPost {
         this.reposts = reposts;
     }
 
-    public Object getCopy_history() {
-        return copy_history;
+    public ArrayList<Map<String, Object>> getCopyHistory() {
+        return copyHistory;
     }
 
-    public void setCopy_history(Object copy_history) {
-        this.copy_history = copy_history;
+    public void setCopyHistory(ArrayList<Map<String, Object>> copyHistory) {
+        this.copyHistory = copyHistory;
     }
 
     public void setGeo(Object geo) {

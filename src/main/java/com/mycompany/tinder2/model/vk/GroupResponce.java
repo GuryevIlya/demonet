@@ -7,13 +7,13 @@ import java.util.List;
  */
 public class GroupResponce {
     private int count;
-    private List<Group> response;
+    private List<GroupVK> response;
 
     public void setCount(int count) {
         this.count = count;
     }
 
-    public void setResponse(List<Group> response) {
+    public void setResponse(List<GroupVK> response) {
         this.response = response;
     }
 
@@ -21,7 +21,7 @@ public class GroupResponce {
         return count;
     }
 
-    public List<Group> getResponse() {
+    public List<GroupVK> getResponse() {
         return response;
     }
 }

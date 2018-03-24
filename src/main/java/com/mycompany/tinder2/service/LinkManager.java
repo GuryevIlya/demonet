@@ -2,9 +2,9 @@ package com.mycompany.tinder2.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.tinder2.model.vk.Group;
+import com.mycompany.tinder2.model.vk.GroupVK;
 import com.mycompany.tinder2.model.vk.Items;
-import com.mycompany.tinder2.model.vk.User;
+import com.mycompany.tinder2.model.vk.UserVK;
 import com.mycompany.tinder2.model.vk.VKResponse;
 import com.mycompany.tinder2.model.vk.WallPost;
 import static com.mycompany.tinder2.service.Utils.getRequest;
