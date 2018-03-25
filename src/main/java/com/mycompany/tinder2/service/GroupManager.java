@@ -44,23 +44,23 @@ public class GroupManager {
         try{
             ObjectMapper objectMapper = new ObjectMapper();
             
-            File id2wallVectorFile = new File("C:\\demonetData\\id2wallVector.txt");
-            if(id2wallVectorFile.exists()){
-                for(String line : FileUtils.readLines(id2wallVectorFile, "utf-8")){
-                    String[] parts = line.split("\t");
-                    id2wallVector.put(parts[0], (Map<String, Integer>) objectMapper.readValue(parts[1], new TypeReference<Map<String, Integer>>(){}));
-                }
-            }
-            
-            File groupFolder = new File("C:\\demonetData\\groups");
-            if(groupFolder.exists()){
-                for(File file: groupFolder.listFiles()){
-                    for(String line : FileUtils.readLines(file, "utf-8")){
-                        GroupVK group = objectMapper.readValue(line, GroupVK.class);
-                        id2Group.put(toInt(group.getId()), group);
-                    }
-                }
-            }
+//            File id2wallVectorFile = new File("C:\\demonetData\\id2wallVector.txt");
+//            if(id2wallVectorFile.exists()){
+//                for(String line : FileUtils.readLines(id2wallVectorFile, "utf-8")){
+//                    String[] parts = line.split("\t");
+//                    id2wallVector.put(parts[0], (Map<String, Integer>) objectMapper.readValue(parts[1], new TypeReference<Map<String, Integer>>(){}));
+//                }
+//            }
+//            
+//            File groupFolder = new File("C:\\demonetData\\groups");
+//            if(groupFolder.exists()){
+//                for(File file: groupFolder.listFiles()){
+//                    for(String line : FileUtils.readLines(file, "utf-8")){
+//                        GroupVK group = objectMapper.readValue(line, GroupVK.class);
+//                        id2Group.put(toInt(group.getId()), group);
+//                    }
+//                }
+//            }
         }catch(Exception e){
             e.printStackTrace();
         }

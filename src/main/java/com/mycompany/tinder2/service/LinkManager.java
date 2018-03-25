@@ -34,6 +34,8 @@ public class LinkManager {
     @Autowired 
     LoginManager loginManager;
     Map<Integer, Set<Integer>> user2friends = new HashMap<Integer, Set<Integer>>();
+    Map<Integer, Map<Integer, Integer>> user2friendsOfFriend = new HashMap<Integer, Map<Integer, Integer>>();
+    Map<Integer, Map<Integer, Integer>> user2user2commonFriendsCount = new HashMap<Integer, Map<Integer, Integer>>();
     
     @PostConstruct
     public void init() {
@@ -55,8 +57,7 @@ public class LinkManager {
            return user2friends.get(userId);
        }
        Thread.currentThread().sleep(300);
-       String url = "https://api.vk.com/method/friends.get?user_id=" + userId + "&v=5.52&access_token=" + loginManager.getAccessToken();
-               
+       String url = "https://api.vk.com/method/friends.get?user_id=" + userId + "&v=5.52&access_token=" + loginManager.getAccessToken();          
        String request = getRequest(url);
        
        ObjectMapper objectMapper = new ObjectMapper();
@@ -73,9 +74,49 @@ public class LinkManager {
        
    }
    
-   
+    public Integer commonFriendsCount(Integer user1Id, Integer user2Id) throws IOException{
+        if(!user2user2commonFriendsCount.containsKey(user1Id)){
+            user2user2commonFriendsCount.put(user1Id, new HashMap<Integer, Integer>());
+        }    
+       
+        if(!user2user2commonFriendsCount.get(user1Id).containsKey(user2Id)){
+             String url = "https://api.vk.com/method/friends.getMutual?v=5.52&access_token=" + loginManager.getAccessToken() + "&source_uid=" + user1Id + "&target_uid=" + user2Id;
+             String responseJSON = Utils.getRequest(url);
+       
+             ObjectMapper objectMapper = new ObjectMapper();
+             VKResponse<Integer> response = (VKResponse<Integer>) objectMapper.readValue(responseJSON, new TypeReference<VKResponse<Integer>>(){});
+        }
+        
+        return user2user2commonFriendsCount.get(user1Id).get(user2Id);
+   }
+    
+    
+    public Map<Integer, Integer> user2CommonFriendsCount(Integer userId, Collection<Integer> ids) throws IOException{
+       Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+       
+       Map<Integer, Integer> alreadyCalculated = user2user2commonFriendsCount.get(userId);
+       for(Integer id: ids){
+           if(alreadyCalculated.containsKey(id)){
+               result.put(id, alreadyCalculated.get(id));
+           }else{
+               String url = "https://api.vk.com/method/friends.getMutual?v=5.52&access_token=" + loginManager.getAccessToken() + "&source_uid=" + userId + "&target_uid=" + id;
+               String responseJSON = Utils.getRequest(url);
+       
+               ObjectMapper objectMapper = new ObjectMapper();
+               VKResponse<Integer> response = (VKResponse<Integer>) objectMapper.readValue(responseJSON, new TypeReference<VKResponse<Integer>>(){});
+           }
+       }
+       return result;
+   }
+    
+    
     public Map<Integer, Integer> friendsOfFriends(Integer userId) throws IOException, InterruptedException{
        Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+       
+       if(user2friendsOfFriend.containsKey(userId)){
+           return user2friendsOfFriend.get(userId);
+       }
+       
        Collection<Integer> friends = friends(userId);
        
        for(Integer friend: friends){
@@ -92,14 +133,18 @@ public class LinkManager {
            }
        }
        
+       user2friendsOfFriend.put(userId, result);
+       if(!user2user2commonFriendsCount.containsKey(userId)){
+           user2user2commonFriendsCount.put(userId, new HashMap<Integer, Integer>());
+       }
+       user2user2commonFriendsCount.get(userId).putAll(result);
        return result;
    }
     
     
     public Set<Integer> groups(Integer userId) throws IOException{
-        String accessToken = "80716c77a5ae0c41d321c4c3d765afe749354bdeaec257421ecbefb7319f21378abbba3e3c682de2faf5a";
         
-        String url = "https://api.vk.com/method/groups.get?v=5.52&access_token=" + accessToken + "&user_id=" + userId + "&fields=description";
+        String url = "https://api.vk.com/method/groups.get?v=5.52&access_token=" + loginManager.getAccessToken() + "&user_id=" + userId + "&fields=description";
         String responseJSON = Utils.getRequest(url);
        
         ObjectMapper objectMapper = new ObjectMapper();

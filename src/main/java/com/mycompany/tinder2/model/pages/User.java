@@ -5,17 +5,23 @@ package com.mycompany.tinder2.model.pages;
  * @author delet
  */
 public class User {
+    private Integer commonFriendsCount;
     private String name;
-    private String sername;
+    private String firstName;
+    private String lastName;
     private String urlPhoto;
     private Integer id;
 
-    public String getName() {
-        return name;
+    public Integer getCommonFriendsCount() {
+        return commonFriendsCount;
     }
 
-    public String getSername() {
-        return sername;
+    public void setCommonFriendsCount(Integer commonFriendsCount) {
+        this.commonFriendsCount = commonFriendsCount;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getUrlPhoto() {
@@ -30,10 +36,6 @@ public class User {
         this.name = name;
     }
 
-    public void setSername(String sername) {
-        this.sername = sername;
-    }
-
     public void setUrlPhoto(String urlPhoto) {
         this.urlPhoto = urlPhoto;
     }
@@ -41,5 +43,22 @@ public class User {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
     
 }

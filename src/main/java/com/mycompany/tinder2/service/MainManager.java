@@ -36,7 +36,7 @@ public class MainManager {
     private LoginManager loginManager;
     
     public List<User> friends(Integer userId, int offset, int count, String sortType) throws IOException, InterruptedException{
-       Map<Integer, Stat> user2Stat = compatibilityManager.getUser2Stat(userId, linkManager.friends(userId));
+       Map<Integer, Stat> user2Stat = compatibilityManager.getProximityStat(userId, linkManager.friendsOfFriends(userId).keySet());
        
        List<Integer> sortedFriends = new ArrayList<Integer>();
        List<Map.Entry<Integer, Stat>> list = new LinkedList<>(user2Stat.entrySet());

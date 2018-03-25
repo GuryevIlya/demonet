@@ -172,23 +172,25 @@ public class UserManager {
    public List<User> users(Collection<Integer> ids) throws IOException, InterruptedException{ 
        List<User> result = new ArrayList<User>();
        
+       
+    Map<Integer, Integer> user2CommonFriendsCount = linkManager.user2CommonFriendsCount(loginManager.getVkId(), ids);
+       
        for(Integer id: ids){
            UserVK userVK = userVK(id);
            User user = new User();
 
-           user.setName(userVK.getFirstName());
-           user.setSername(userVK.getLastName());
+           user.setFirstName(userVK.getFirstName());
+           user.setLastName(userVK.getLastName());
            user.setUrlPhoto(userVK.getPhotoURL());
            user.setId(userVK.getId());
+           
+           user.setCommonFriendsCount(user2CommonFriendsCount.get(id));
            
            result.add(user);
        }
        
        return result;
    }
-   
-   
-   
    
    public UserVectors userVectors(Integer userId) throws IOException, InterruptedException{
        if(id2userVectors.containsKey(userId)){
@@ -281,5 +283,9 @@ public class UserManager {
        
 //        gm.vector(173963709);
 //        System.err.println("");
+    }
+
+    void user(int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

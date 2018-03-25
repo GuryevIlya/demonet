@@ -35,19 +35,25 @@
                     scope = $scope;
                     $scope.users = ${users};
                     $scope.sortType = "numberAndProximity";
+                    $scope.isUploadingFriends = false;
                    
                     $scope.loadMoreUsers = function(){
+                        if($scope.isUploadingFriends == true){
+                            return;
+                        }
                         var requestText = "friends?count=10"  
                                             + "&offset=" + $scope.users.length 
                                             + "&access_token="  + $scope.accessToken 
                                             + "&user_id=" + $scope.userId
                                             + "&sortType=" + $scope.sortType;
                         
+                        $scope.isUploadingFriends = true;
                         $http.get(requestText).success(function(data){
                             for(var i in data){
                                 $scope.users.push(data[i]);
                             }    
                         });
+                        $scope.isUploadingFriends = false;
                     };
                     
                     $scope.sortTypeChange = function(){
@@ -129,12 +135,23 @@
             </div>    
         </div>
         <div style = "display: inline-block;vertical-align: top;height:3000px;width: 850px;margin-left: 150px;">
-            <div ng-repeat="user in users" style = "width:100%;background: white;"> 
-                <div>
-                    {{user.firstName}}&nbsp{{user.lastName}}
-                </div>
-                <div>
-                    <img src="{{user.photo}}" >
+            <div style = "width:100%;background: white;margin-bottom: 20px;height: 100px;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
+                
+            </div>
+            <div style = "width:100%;background: white;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
+                <div ng-repeat = "user in users" style = "margin:0 auto;width:95%;border-bottom-width: 1px;border-bottom-color:rgb(221, 223, 226);border-bottom-style:solid;font-family: sans-serif;"> 
+                    <div style = "width:100px;height: 100px;margin:5px;display: inline-block;vertical-align: top;">
+                        <img src="{{user.urlPhoto}}" >
+                    </div>
+                    <div style = "display: inline-block;vertical-align: top;margin:5px;width:calc(95% - 100px)">
+                        <div style = "font-weight: 700;font-size: 13px;">
+                            <a href = "" class = "link" style = "color:#2a5885;">{{user.firstName}}&nbsp{{user.lastName}}</a>
+                        </div>
+                        <div style = "font-size:12.5px;font-size:12.5px">
+                            <a href = "" class = "link" style = "color: #656565;">{{user.commonFriendsCount}}&nbspобщих друзей</a>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
