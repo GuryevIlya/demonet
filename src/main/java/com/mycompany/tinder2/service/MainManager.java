@@ -50,18 +50,16 @@ public class MainManager {
                        return  o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount();
                    }
                }
-            });
-        }else if(sortType.equals("number")){
-           Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
+           });
+       }else if(sortType.equals("number")){
+            Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
                @Override
                public int compare(Map.Entry<Integer, Stat> o1, Map.Entry<Integer, Stat> o2){
                    return o1.getKey() - o2.getKey();
                }
             });
-
-            
        }else if(sortType.equals("compatibilityAndNumber")){
-           Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
+            Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
                @Override
                public int compare(Map.Entry<Integer, Stat> o1, Map.Entry<Integer, Stat> o2){
                    if(o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount() == 0){

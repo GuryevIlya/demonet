@@ -34,14 +34,14 @@
                 .controller('AppController', ['$scope', '$http', '$element', function($scope, $http, $element) {
                     scope = $scope;
                     $scope.users = ${users};
-                    $scope.sortType = "numberAndProximity";
+                    $scope.sortType = "proximityAndNumber";
                     $scope.isUploadingFriends = false;
                    
                     $scope.loadMoreUsers = function(){
                         if($scope.isUploadingFriends == true){
                             return;
                         }
-                        var requestText = "friends?count=10"  
+                        var requestText = "friends?count=100"  
                                             + "&offset=" + $scope.users.length 
                                             + "&access_token="  + $scope.accessToken 
                                             + "&user_id=" + $scope.userId
@@ -145,7 +145,7 @@
                     </div>
                     <div style = "display: inline-block;vertical-align: top;margin:5px;width:calc(95% - 100px)">
                         <div style = "font-weight: 700;font-size: 13px;">
-                            <a href = "" class = "link" style = "color:#2a5885;">{{user.firstName}}&nbsp{{user.lastName}}</a>
+                            <a href = "" class = "link" style = "color:#2a5885;">{{user.firstName}}&nbsp{{user.lastName}}{{user.id}}</a>
                         </div>
                         <div style = "font-size:12.5px;font-size:12.5px">
                             <a href = "" class = "link" style = "color: #656565;">{{user.commonFriendsCount}}&nbspобщих друзей</a>

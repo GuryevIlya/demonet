@@ -18,6 +18,10 @@ body{
 }
 
 .link{
-    
     text-decoration: none;
+}
+
+.link:hover{
+   text-decoration: underline;
+   color:red;
 }
