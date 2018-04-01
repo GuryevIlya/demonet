@@ -117,12 +117,15 @@ public class LinkManager {
            return user2friendsOfFriend.get(userId);
        }
        
-       Collection<Integer> friends = friends(userId);
+       Set<Integer> friends = new HashSet<Integer>(friends(userId));
        
        for(Integer friend: friends){
            Collection<Integer> friendsOfFriend = friends(friend);
            if(friendsOfFriend != null){
                for(Integer id : friendsOfFriend){
+                   if(friends.contains(id)){
+                       continue;
+                   }
                    Integer oldValue = result.get(id);
                    if(oldValue != null){
                        result.put(id, oldValue + 1);
@@ -132,6 +135,7 @@ public class LinkManager {
                }
            }
        }
+       result.remove(loginManager.getVkId());
        
        user2friendsOfFriend.put(userId, result);
        if(!user2user2commonFriendsCount.containsKey(userId)){

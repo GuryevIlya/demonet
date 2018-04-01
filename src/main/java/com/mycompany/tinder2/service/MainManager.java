@@ -40,14 +40,14 @@ public class MainManager {
        
        List<Integer> sortedFriends = new ArrayList<Integer>();
        List<Map.Entry<Integer, Stat>> list = new LinkedList<>(user2Stat.entrySet());
-       if(sortType.equals("numberAndProximity")){
+       if(sortType.equals("proximityAndNumber")){
            Collections.sort(list, new Comparator<Map.Entry<Integer, Stat>>(){
                @Override
                public int compare(Map.Entry<Integer, Stat> o1, Map.Entry<Integer, Stat> o2){
                    if(o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount() == 0){
                        return o1.getKey() - o2.getKey();
                    }else{
-                       return  o1.getValue().getCommonFriendCount() - o2.getValue().getCommonFriendCount();
+                       return  o2.getValue().getCommonFriendCount() - o1.getValue().getCommonFriendCount();
                    }
                }
            });

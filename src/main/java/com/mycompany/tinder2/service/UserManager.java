@@ -175,7 +175,7 @@ public class UserManager {
        
     Map<Integer, Integer> user2CommonFriendsCount = linkManager.user2CommonFriendsCount(loginManager.getVkId(), ids);
        
-       for(Integer id: ids){
+       for(Integer id: ids){ 
            UserVK userVK = userVK(id);
            User user = new User();
 
@@ -219,7 +219,7 @@ public class UserManager {
             return id2user.get(userId);
         }
         
-        Thread.currentThread().sleep(300);
+        Thread.currentThread().sleep(600);
         String fields = "about,activities,bdate,books,city,country,education,games,home_town,interests,sex,photo_100";
         
         String url = "https://api.vk.com/method/users.get?v=5.71&access_token=" + loginManager.getAccessToken() + "&user_ids=" + userId + "&fields=" + fields ;
@@ -229,7 +229,12 @@ public class UserManager {
         ObjectMapper objectMapper = new ObjectMapper();
         UserResponse userResponse = (UserResponse) objectMapper.readValue(request, UserResponse.class);
         
-        UserVK result = (UserVK) userResponse.getResponse().get(0);
+        UserVK result = null;
+        try{
+            result = (UserVK) userResponse.getResponse().get(0);
+        }catch(Exception e){
+            int r = 4;
+        }
         
         id2user.put(userId, result);
         FileUtils.write(new File("C:\\demonetData\\id2user.txt"), userId + "\t" + objectMapper.writeValueAsString(result) + "\n", "utf-8", true);

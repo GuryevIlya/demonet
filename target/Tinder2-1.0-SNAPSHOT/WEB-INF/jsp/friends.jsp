@@ -68,7 +68,7 @@
         $(document).ready(function(){
             
             $(document).scroll(function(){
-                if($(window).scrollTop() + $(window).height() >= $(document).height()){
+                if($(window).scrollTop() + $(window).height() >= $(document).height() - 100){
                     $("#more-button").click();
                 }
             });
@@ -101,7 +101,7 @@
         </div>
     </div>
     <div style = "width:1020px;margin: 0 auto;top:70px;position:relative;">
-        <div style = "display: inline-block;vertical-align: top;height:2000px;width: 150px;position:fixed;">
+        <div style = "display: inline-block;vertical-align: top;width: 150px;position:fixed;">
             <div>
                 <div style = "padding:2px;">
                     <i class="fa fa-heart" aria-hidden="true" style = "color:#285473;margin-right:5px;font-size: 18px;"></i>
@@ -134,24 +134,45 @@
                 </div>
             </div>    
         </div>
-        <div style = "display: inline-block;vertical-align: top;height:3000px;width: 850px;margin-left: 150px;">
+        <div style = "display: inline-block;vertical-align: top;width: 850px;margin-left: 150px;">
             <div style = "width:100%;background: white;margin-bottom: 20px;height: 100px;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
-                
+                <div>
+                    <div>
+                        <input type = "text" placeholder = "Введите ключевые слова интересов" style = "width:600px;" class="input_border"><button style = "background-color:#4872a3;border-radius: 0 2px 2px 0;border:0px;padding: 8px 15px 8px 15px;"><i class="fa fa-plus" aria-hidden="true" style = "color:white;font-size: 13px;"></i></button>
+                    </div>
+                    <div>
+                        <span style = "background-color:#eef0f3;font-size:14px;padding:3px;font-family: sans-serif;color:#656565;border-radius: 2px;margin-right: 5px;" >
+                            тег 1&nbsp<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;"></i>
+                        </span>
+                        <span style = "background-color:#eef0f3;font-size:14px;padding:3px;font-family: sans-serif;color:#656565;border-radius: 2px;margin-right: 5px;" >
+                            МГУ&nbsp<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;"></i>
+                        </span>
+                        <span style = "background-color:#eef0f3;font-size:14px;padding:3px;font-family: sans-serif;color:#656565;border-radius: 2px;margin-right: 5px;" >
+                            Московский Государственный Университет&nbsp<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;"></i>
+                        </span>
+                    </div> 
+                </div>
             </div>
             <div style = "width:100%;background: white;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
-                <div ng-repeat = "user in users" style = "margin:0 auto;width:95%;border-bottom-width: 1px;border-bottom-color:rgb(221, 223, 226);border-bottom-style:solid;font-family: sans-serif;"> 
-                    <div style = "width:100px;height: 100px;margin:5px;display: inline-block;vertical-align: top;">
-                        <img src="{{user.urlPhoto}}" >
+                <div ng-repeat = "user in users" style = "margin:0 auto;width:97%;border-bottom-width: 1px;border-bottom-color:rgb(221, 223, 226);border-bottom-style:solid;font-family: sans-serif;"> 
+                    <div style = "width:100px;height: 100px;margin:5px 5px 5px 0;display: inline-block;vertical-align: top;">
+                        <a href = "https://vk.com/id{{user.id}}">
+                            <img src="{{user.urlPhoto}}">
+                        </a> 
                     </div>
                     <div style = "display: inline-block;vertical-align: top;margin:5px;width:calc(95% - 100px)">
-                        <div style = "font-weight: 700;font-size: 13px;">
-                            <a href = "" class = "link" style = "color:#2a5885;">{{user.firstName}}&nbsp{{user.lastName}}{{user.id}}</a>
+                        <div style = "margin-bottom:5px;">
+                            <span style = "font-size: 13px;font-weight: 700;">
+                                <a href = "https://vk.com/id{{user.id}}"  class = "link" style = "color:#2a5885;">{{user.firstName}}&nbsp{{user.lastName}}</a>
+                            </span>
+                            <span style = "font-size: 12.5px;color: #656565;">
+                                {{user.id}}
+                            </span>
                         </div>
-                        <div style = "font-size:12.5px;font-size:12.5px">
-                            <a href = "" class = "link" style = "color: #656565;">{{user.commonFriendsCount}}&nbspобщих друзей</a>
+                        <div style = "font-size:12.5px;">
+                            <a href = "https://vk.com/friends?id={{user.id}}&section=common" class = "link" style = "color: #656565;">{{user.commonFriendsCount}}&nbspобщих друзей</a>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
