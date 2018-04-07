@@ -33,9 +33,13 @@
                 ])
                 .controller('AppController', ['$scope', '$http', '$element', function($scope, $http, $element) {
                     scope = $scope;
+                    
+                    $scope.isHintsShow = false;
+                    $scope.allInterests = ${interests};
                     $scope.users = ${users};
                     $scope.sortType = "proximityAndNumber";
                     $scope.isUploadingFriends = false;
+                    $scope.interests = [];
                    
                     $scope.loadMoreUsers = function(){
                         if($scope.isUploadingFriends == true){
@@ -59,7 +63,11 @@
                     $scope.sortTypeChange = function(){
                         $scope.users = [];
                         $scope.loadMoreUsers();
-                    }
+                    };
+                    
+                    $scope.addInterest = function(interest){
+                        $scope.interests.push(interest);
+                    };
                     
                 }]);
 
@@ -135,26 +143,25 @@
             </div>    
         </div>
         <div style = "display: inline-block;vertical-align: top;width: 850px;margin-left: 150px;">
-            <div style = "width:100%;background: white;margin-bottom: 20px;height: 100px;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
-                <div>
-                    <div>
-                        <input type = "text" placeholder = "Введите ключевые слова интересов" style = "width:600px;" class="input_border"><button style = "background-color:#4872a3;border-radius: 0 2px 2px 0;border:0px;padding: 8px 15px 8px 15px;"><i class="fa fa-plus" aria-hidden="true" style = "color:white;font-size: 13px;"></i></button>
+            <div style = "width:100%;padding:0px 12.5px;background: white;margin-bottom: 20px;height: 100px;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
+                <div style = "width:100%;margin-top:5px;position:relative;">
+                    <div style = "width:100%;box-sizing: border-box;">
+                        <input ng-focus = "isHintsShow = true" ng-blur = "isHintsShow = false" type = "text" placeholder = "Введите ключевые слова интересов" style = "width:calc(100% - 42.225px);box-sizing: border-box;border-right: none;" class="input_border"><button style = "height:33.5px;background-color:#f0f2f5;border-width:1px;border-color: rgb(211, 217, 222);border-style:solid;padding: 8px 15px 8px 15px;"><i class="fa fa-plus" aria-hidden="true" style = "color:#939aa7;font-size: 13px;"></i></button>
                     </div>
-                    <div>
-                        <span style = "background-color:#eef0f3;font-size:14px;padding:3px;font-family: sans-serif;color:#656565;border-radius: 2px;margin-right: 5px;" >
-                            тег 1&nbsp<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;"></i>
-                        </span>
-                        <span style = "background-color:#eef0f3;font-size:14px;padding:3px;font-family: sans-serif;color:#656565;border-radius: 2px;margin-right: 5px;" >
-                            МГУ&nbsp<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;"></i>
-                        </span>
-                        <span style = "background-color:#eef0f3;font-size:14px;padding:3px;font-family: sans-serif;color:#656565;border-radius: 2px;margin-right: 5px;" >
-                            Московский Государственный Университет&nbsp<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;"></i>
+                    <div ng-show = "isHintsShow" style = "box-sizing: border-box;width:100%;background-color:white;border-radius:0 0 3px 3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid;border-top:none;z-index:10000;position:absolute;">
+                        <div ng-repeat = "interest in allInterests" ng-click = "addInterest(interest)" style ="padding:7px 12px 7px 12px;font-size:13px;font-family: sans-serif;" class = "hint">
+                            {{interest}}
+                        </div>
+                    </div>
+                    <div style = "width:100%;box-sizing: border-box;margin-top:7px;">
+                        <span ng-repeat = "interest in interests" style = "background-color:#dae2ea;font-size:12.5px;padding:3px;font-family: sans-serif;color:#55677d;border-radius: 2px;margin-right: 5px;" >
+                            {{interest}}<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;color:#8ca6c0;"></i>
                         </span>
                     </div> 
                 </div>
             </div>
-            <div style = "width:100%;background: white;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
-                <div ng-repeat = "user in users" style = "margin:0 auto;width:97%;border-bottom-width: 1px;border-bottom-color:rgb(221, 223, 226);border-bottom-style:solid;font-family: sans-serif;"> 
+            <div style = "width:100%;background: white;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid;padding: 0px 12.5px;">
+                <div ng-repeat = "user in users" style = "width:100%;border-bottom-width: 1px;border-bottom-color:rgb(221, 223, 226);border-bottom-style:solid;font-family: sans-serif;"> 
                     <div style = "width:100px;height: 100px;margin:5px 5px 5px 0;display: inline-block;vertical-align: top;">
                         <a href = "https://vk.com/id{{user.id}}">
                             <img src="{{user.urlPhoto}}">

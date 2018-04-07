@@ -99,6 +99,24 @@ public class MainManager {
 //        return result;
 //    }
 
+    public Set<String> interests(){
+        Set<String> result = new HashSet<String>();
+        
+        result.add("МГУ");
+        result.add("Ломоносов");
+        result.add("ВМиК");
+        result.add("МГУ им. М.В.Ломоносова");
+        result.add("Московский Государственный Университет");
+        result.add("Muse");
+        result.add("Тест");
+        result.add("Пример");
+        result.add("Хуй");
+        result.add("Пизда");
+        
+        return result;
+    }
+    
+    
     public static void main(String[] args) throws IOException, InterruptedException{
         System.out.print("hjhjj");
         System.out.print("hjhjj");

@@ -51,7 +51,7 @@ public class CommonController {
     public  String start(HttpServletRequest request) throws IOException, InterruptedException {
        // compatibilityManager.processCommonFriendsCount(loginManager.getVkId());
     //  compatibilityManager.processCompatibility(loginManager.getVkId(), linkManager.friendsOfFriends(loginManager.getVkId()).keySet());
-    // return "redirect:" + VK_AUTH_URL; 
+   //  return "redirect:" + VK_AUTH_URL; 
      //  return "newjsp";
 
      //  ObjectMapper objectMapper = new ObjectMapper();
@@ -118,6 +118,7 @@ public class CommonController {
         
         ObjectMapper om = new ObjectMapper();
         model.addAttribute("users", om.writeValueAsString(mainManager.friends(loginManager.getVkId(), 0, 100, "proximityAndNumber")));
+        model.addAttribute("interests", om.writeValueAsString(mainManager.interests()));
         
         return "friends";
     }

@@ -34,3 +34,8 @@ body{
     border-width: 1px;
     outline:none;
 }
+
+.hint:hover{
+    background-color: #e5ebf1;
+    cursor:pointer;
+}
