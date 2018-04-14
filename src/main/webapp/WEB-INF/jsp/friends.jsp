@@ -39,7 +39,7 @@
                     $scope.users = ${users};
                     $scope.sortType = "proximityAndNumber";
                     $scope.isUploadingFriends = false;
-                    $scope.interests = [];
+                    $scope.interests = {};
                    
                     $scope.loadMoreUsers = function(){
                         if($scope.isUploadingFriends == true){
@@ -66,7 +66,15 @@
                     };
                     
                     $scope.addInterest = function(interest){
-                        $scope.interests.push(interest);
+                        $scope.interests[interest] = interest;
+                    };
+                    
+                    $scope.bodyClick = function(event){
+                        if(event.target.className.includes("hint")){
+                            $scope.isHintsShow = false;
+                        }else if (!event.target.className.includes("interest_input")){
+                            $scope.isHintsShow = false;
+                        }
                     };
                     
                 }]);
@@ -101,7 +109,7 @@
       }
   </style>
 </head>
-<body ng-controller="AppController">
+<body ng-controller="AppController" ng-click = "bodyClick($event)">
     <button ng-click="loadMoreUsers()" id="more-button" type="button" style="display: none"></button>
     <div style = "width:100%;box-sizing:border-box;height:50px;background-color:#29487d;color:white;font-family:Anton;padding: 0 250px;position:fixed;z-index:10000">
         <div style = "max-width:1036px;margin:0 auto;height:50px;">
@@ -146,17 +154,17 @@
             <div style = "width:100%;padding:0px 12.5px;background: white;margin-bottom: 20px;height: 100px;border-radius:3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid">
                 <div style = "width:100%;margin-top:5px;position:relative;">
                     <div style = "width:100%;box-sizing: border-box;">
-                        <input ng-focus = "isHintsShow = true" ng-blur = "isHintsShow = false" type = "text" placeholder = "Введите ключевые слова интересов" style = "width:calc(100% - 42.225px);box-sizing: border-box;border-right: none;" class="input_border"><button style = "height:33.5px;background-color:#f0f2f5;border-width:1px;border-color: rgb(211, 217, 222);border-style:solid;padding: 8px 15px 8px 15px;"><i class="fa fa-plus" aria-hidden="true" style = "color:#939aa7;font-size: 13px;"></i></button>
+                        <input  ng-focus = "isHintsShow = true" type = "text" placeholder = "Введите ключевые слова интересов" style = "width:calc(100% - 42.225px);box-sizing: border-box;border-right: none;" class="input_border interest_input"><button style = "height:33.5px;background-color:#f0f2f5;border-width:1px;border-color: rgb(211, 217, 222);border-style:solid;padding: 8px 15px 8px 15px;"><i class="fa fa-plus" aria-hidden="true" style = "color:#939aa7;font-size: 13px;"></i></button>
                     </div>
-                    <div ng-show = "isHintsShow" style = "box-sizing: border-box;width:100%;background-color:white;border-radius:0 0 3px 3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid;border-top:none;z-index:10000;position:absolute;">
-                        <div ng-repeat = "interest in allInterests" ng-click = "addInterest(interest)" style ="padding:7px 12px 7px 12px;font-size:13px;font-family: sans-serif;" class = "hint">
+                    <div ng-show = "isHintsShow"  style = "box-sizing: border-box;width:100%;background-color:white;border-radius:0 0 3px 3px;border-width: 1px;border-color:rgb(221, 223, 226);border-style:solid;border-top:none;z-index:10000;position:absolute;">
+                        <div ng-repeat = "interest in allInterests" ng-click = "addInterest(interest)" style ="padding:7px 12px 7px 12px;font-size:13px;font-family: sans-serif;cursor:pointer;" class = "hint">
                             {{interest}}
                         </div>
                     </div>
                     <div style = "width:100%;box-sizing: border-box;margin-top:7px;">
-                        <span ng-repeat = "interest in interests" style = "background-color:#dae2ea;font-size:12.5px;padding:3px;font-family: sans-serif;color:#55677d;border-radius: 2px;margin-right: 5px;" >
-                            {{interest}}<i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;color:#8ca6c0;"></i>
-                        </span>
+                        <div ng-repeat = "interest in interests" style = "display:inline-block;background-color:#dae2ea;font-size:12.5px;padding:3px;font-family: sans-serif;color:#55677d;border-radius: 2px;margin:0px 5px 5px 0;" >
+                            {{interest}} <i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;color:#8ca6c0;cursor:pointer;"></i>
+                        </div>
                     </div> 
                 </div>
             </div>

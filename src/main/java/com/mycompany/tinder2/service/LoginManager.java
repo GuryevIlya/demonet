@@ -120,7 +120,7 @@ public class LoginManager {
     }
     
     public String getAccessToken(){
-        return "14c5361cccc7dd019a4d59f49bac917e38759be76401d0362a1f5dc36b0b7087e492548f8b0c37e15f1dd";
+        return "6970b48e05cdcfad3563889317fd1e70078bdf2758827102eb64f4fc29aaa223aa4842f0021442cc2f083";
     }
     
     public Integer getVkId(){

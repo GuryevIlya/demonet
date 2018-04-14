@@ -112,6 +112,10 @@ public class MainManager {
         result.add("Пример");
         result.add("Хуй");
         result.add("Пизда");
+        result.add("Танцы");
+        result.add("Танцы до упада");
+        result.add("Марки");
+        result.add("Московская область");
         
         return result;
     }
