@@ -12,6 +12,8 @@ import java.util.Map;
  * @author delet
  */
 public class VectorUtils {
+    public static MorphoAnalyst ma = new MorphoAnalyst();
+    
     private static List<String> toWords(String text){
         String withOutInvisibleChar = text.replace("\n", " ")
                                           .replace("\t", " ")
@@ -21,7 +23,7 @@ public class VectorUtils {
                                           .replace(":", " ")
                                           .replace("!", " ");
         
-        MorphoAnalyst ma = new MorphoAnalyst();
+        
         return  MorphoAnalyst.normalize(Arrays.asList(withOutInvisibleChar.split(" ")));
     }
     

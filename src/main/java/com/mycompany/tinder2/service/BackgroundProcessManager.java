@@ -1,7 +1,6 @@
 package com.mycompany.tinder2.service;
 
-import java.io.IOException;
-import java.util.Map;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,18 +9,14 @@ import org.springframework.stereotype.Component;
  * @author delet
  */
 @Component
-public class BackgroundProcessManager {
+public class BackgroundProcessManager extends Thread{
     @Autowired 
-    private LinkManager linkManager;
-    @Autowired 
-    private LoginManager loginManager;
-    @Autowired
-    private CompatibilityManager compatibilityManager;
+    private UsersUploader usersUploader;
     
-    public void friendsOfFriendsCompatibility() throws IOException, InterruptedException{
-        for (Map.Entry<Integer, Integer> en : linkManager.friendsOfFriends(loginManager.getVkId()).entrySet()) {
-            compatibilityManager.addCommonFriendsCount(loginManager.getVkId() ,en.getKey() ,en.getValue());
-        }
+    @PostConstruct
+    public void init() {
+        usersUploader.start();
     }
+    
     
 }

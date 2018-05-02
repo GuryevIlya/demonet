@@ -6,9 +6,11 @@ import com.mycompany.tinder2.model.internal.Stat;
 import com.mycompany.tinder2.model.internal.UserVectors;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -78,16 +80,33 @@ public class CompatibilityManager {
     }
    
     private Stat stat(Integer userId1, Integer userId2){
-       String coupleId = coupleId(userId1, userId2); 
-       if(couple2Stat.containsKey(coupleId)){
+        String coupleId = coupleId(userId1, userId2); 
+        if(couple2Stat.containsKey(coupleId)){
             return couple2Stat.get(coupleId);
-       }
+        }
        
-       Stat stat = new Stat();
-       couple2Stat.put(coupleId, stat);
+        Stat stat = new Stat();
+        couple2Stat.put(coupleId, stat);
         
-       return stat; 
-   }
+        return stat; 
+    }
+    
+    private Map<Integer, Stat> stats(Integer user1Id, Collection<Integer> ids){
+        Map<Integer, Stat> result = new HashMap<Integer, Stat>();
+        
+        for(Integer user2Id: ids){
+            String coupleId = coupleId(user1Id, user2Id); 
+            if(couple2Stat.containsKey(coupleId)){
+                result.put(user2Id, couple2Stat.get(coupleId));
+            }else{
+                Stat stat = new Stat();
+                result.put(user2Id, stat);
+                couple2Stat.put(coupleId, stat);
+            }
+        }
+        
+        return result; 
+    }
     
 //    public Double getCompatibility(Integer userId1, Integer userId2) throws IOException, InterruptedException{
 //        Map<String, Integer> vector1 = userManager.vector(userId1);
@@ -104,13 +123,25 @@ public class CompatibilityManager {
     public Map<Integer, Stat> getProximityStat(Integer userId, Collection<Integer> friendsIds) throws IOException, InterruptedException{
         Map<Integer, Stat> result = new HashMap<Integer, Stat>();
         
-        for(Integer friendId: friendsIds){
-            Stat stat = stat(userId, friendId);
-            if(stat.getCommonFriendCount() == null){
-                stat.setCommonFriendCount(linkManager.commonFriendsCount(userId, friendId));
+        Map<Integer, Stat> stats = stats(userId, friendsIds);
+        Set<Integer> missingStats = new HashSet<Integer>();
+        for (Map.Entry<Integer, Stat> entry : stats.entrySet()) {
+            if(entry.getValue().getCommonFriendCount() == null){
+                missingStats.add(entry.getKey());
             }
-            
-            result.put(friendId, stat);
+        }
+        
+        Map<Integer, Integer> userId2CommonFriendCount = linkManager.user2CommonFriendsCount(userId, missingStats);
+        for (Map.Entry<Integer, Stat> entry : stats.entrySet()) {
+            Stat stat = entry.getValue();
+            if(stat.getCommonFriendCount() == null  && userId2CommonFriendCount.get(entry.getKey()) != null){
+                stat.setUserId1(userId);
+                stat.setUserId2(entry.getKey());
+                stat.setCommonFriendCount(userId2CommonFriendCount.get(entry.getKey()));
+                result.put(entry.getKey(), stat);
+            }else if(stat.getCommonFriendCount() != null){
+                result.put(entry.getKey(), stat);
+            }
         }
         
         return result;

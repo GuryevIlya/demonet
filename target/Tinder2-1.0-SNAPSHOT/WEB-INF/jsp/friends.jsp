@@ -41,14 +41,25 @@
                     $scope.isUploadingFriends = false;
                     $scope.interests = {};
                    
+                    $scope.interestsStr = function(){
+                        var result = "";
+                        for(var i in $scope.interests){
+                            result += $scope.interests[i] + "\t";
+                        }
+                        result = result.trim();
+                        
+                        return result;
+                    };
+                    
                     $scope.loadMoreUsers = function(){
                         if($scope.isUploadingFriends == true){
                             return;
                         }
+                        
                         var requestText = "friends?count=100"  
-                                            + "&offset=" + $scope.users.length 
-                                            + "&access_token="  + $scope.accessToken 
+                                            + "&offset=" + $scope.users.length
                                             + "&user_id=" + $scope.userId
+                                            + "&interests=" + $scope.interestsStr()
                                             + "&sortType=" + $scope.sortType;
                         
                         $scope.isUploadingFriends = true;
@@ -61,12 +72,21 @@
                     };
                     
                     $scope.sortTypeChange = function(){
-                        $scope.users = [];
                         $scope.loadMoreUsers();
                     };
                     
                     $scope.addInterest = function(interest){
                         $scope.interests[interest] = interest;
+                        
+                        $scope.users = [];
+                        $scope.loadMoreUsers();
+                    };
+                    
+                    $scope.removeInterest = function(interest){
+                        delete $scope.interests[interest];
+                        
+                        $scope.users = [];
+                        $scope.loadMoreUsers();
                     };
                     
                     $scope.bodyClick = function(event){
@@ -163,7 +183,7 @@
                     </div>
                     <div style = "width:100%;box-sizing: border-box;margin-top:7px;">
                         <div ng-repeat = "interest in interests" style = "display:inline-block;background-color:#dae2ea;font-size:12.5px;padding:3px;font-family: sans-serif;color:#55677d;border-radius: 2px;margin:0px 5px 5px 0;" >
-                            {{interest}} <i class="fa fa-times" aria-hidden="true" style = "font-size: 13px;color:#8ca6c0;cursor:pointer;"></i>
+                            {{interest}} <i ng-click = "removeInterest(interest)" class="fa fa-times" aria-hidden="true" style = "font-size: 13px;color:#8ca6c0;cursor:pointer;"></i>
                         </div>
                     </div> 
                 </div>

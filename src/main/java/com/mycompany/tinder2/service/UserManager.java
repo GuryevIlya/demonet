@@ -2,6 +2,7 @@ package com.mycompany.tinder2.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.tinder2.model.internal.Group;
 import com.mycompany.tinder2.model.internal.UserVectors;
 import com.mycompany.tinder2.model.pages.User;
 import com.mycompany.tinder2.model.vk.GroupResponce;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -89,8 +91,7 @@ public class UserManager {
         }
     }
    
-   
-   
+    
     private List<WallPost> wallPosts(Integer userId, int offset, int count) throws IOException{
         String filter = "all";
         String fields = "text";
@@ -169,27 +170,29 @@ public class UserManager {
        return result;
    }
     
-   public List<User> users(Collection<Integer> ids) throws IOException, InterruptedException{ 
-       List<User> result = new ArrayList<User>();
+   public LinkedHashMap<Integer, User> users(Collection<Integer> ids) throws IOException, InterruptedException{ 
+       LinkedHashMap<Integer, User> result = new LinkedHashMap<Integer, User>();
        
-       
-    Map<Integer, Integer> user2CommonFriendsCount = linkManager.user2CommonFriendsCount(loginManager.getVkId(), ids);
+       Map<Integer, Integer> user2CommonFriendsCount = linkManager.user2CommonFriendsCount(loginManager.getVkId(), ids);
        
        for(Integer id: ids){ 
            UserVK userVK = userVK(id);
-           User user = new User();
+           if(userVK != null){
+                User user = new User();
 
-           user.setFirstName(userVK.getFirstName());
-           user.setLastName(userVK.getLastName());
-           user.setUrlPhoto(userVK.getPhotoURL());
-           user.setId(userVK.getId());
+                user.setFirstName(userVK.getFirstName());
+                user.setLastName(userVK.getLastName());
+                user.setUrlPhoto(userVK.getPhotoURL());
+                user.setId(userVK.getId());
            
-           user.setCommonFriendsCount(user2CommonFriendsCount.get(id));
-           
-           result.add(user);
-       }
+                user.setCommonFriendsCount(user2CommonFriendsCount.get(id));
+                result.put(id, user);
+           }else{
+               result.put(id, null);
+           }
+        }
        
-       return result;
+        return result;
    }
    
    public UserVectors userVectors(Integer userId) throws IOException, InterruptedException{
@@ -200,16 +203,27 @@ public class UserManager {
        UserVectors result = new UserVectors(userId);
        
        UserVK userVK = userVK(userId);
+       if(userVK == null){
+           return null;
+       }
        result.setFirstName(userVK.getFirstName());
        result.setLastName(userVK.getLastName());
        result.setPhoto(userVK.getPhotoURL());
        result.setCity(userVK.getCity() != null ? userVK.getCity().getTitle(): null);
        result.setInfoVector(userInfoVector(userVK));
-       addWallVectors(result);
+       // addWallVectors(result);
        
-       result.setGroups(groupManager.groups(linkManager.groups(userId)));
+       Set<Integer> userGroups = linkManager.groups(userId);
+       if(userGroups != null && !userGroups.isEmpty()){
+           for(Group group: groupManager.groups(userGroups)){
+               result.getGroupNames().add(group.getName());
+           }
+       }
+      
+       //result.setGroups(groupManager.groups(linkManager.groups(userId)));
+       id2userVectors.put(userId, result);
        ObjectMapper objectMapper = new ObjectMapper();
-       FileUtils.write(new File("C:\\demonetData\\id2user.txt"), userId + "\t" + objectMapper.writeValueAsString(result) + "\n", "utf-8", true);
+       FileUtils.write(new File("C:\\demonetData\\id2userVectors.txt"), userId + "\t" + objectMapper.writeValueAsString(result) + "\n", "utf-8", true);
        return result;
    }
    
@@ -232,12 +246,11 @@ public class UserManager {
         UserVK result = null;
         try{
             result = (UserVK) userResponse.getResponse().get(0);
+            id2user.put(userId, result);
+            FileUtils.write(new File("C:\\demonetData\\id2user.txt"), userId + "\t" + objectMapper.writeValueAsString(result) + "\n", "utf-8", true);
         }catch(Exception e){
-            int r = 4;
+            throw new RuntimeException(e);
         }
-        
-        id2user.put(userId, result);
-        FileUtils.write(new File("C:\\demonetData\\id2user.txt"), userId + "\t" + objectMapper.writeValueAsString(result) + "\n", "utf-8", true);
         
         return result;
     }

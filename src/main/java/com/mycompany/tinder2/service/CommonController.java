@@ -51,8 +51,8 @@ public class CommonController {
     public  String start(HttpServletRequest request) throws IOException, InterruptedException {
        // compatibilityManager.processCommonFriendsCount(loginManager.getVkId());
     //  compatibilityManager.processCompatibility(loginManager.getVkId(), linkManager.friendsOfFriends(loginManager.getVkId()).keySet());
-  //   return "redirect:" + VK_AUTH_URL; 
-     //  return "newjsp";
+   // return "redirect:" + VK_AUTH_URL; 
+    //   return "newjsp";
 
      //  ObjectMapper objectMapper = new ObjectMapper();
 //     List<GroupVK> list = new ArrayList<GroupVK>();   
@@ -76,7 +76,7 @@ public class CommonController {
 //        ids = new ArrayList<Integer>();
 //     }
 //        userManager.user(44187843);
-        return "redirect:friendsPage";  
+      return "redirect:friendsPage";  
     }
     
     @RequestMapping(value="/code", method = RequestMethod.GET)
@@ -117,7 +117,7 @@ public class CommonController {
     public String friendsPage(ModelMap model) throws IOException, InterruptedException {
         
         ObjectMapper om = new ObjectMapper();
-        model.addAttribute("users", om.writeValueAsString(mainManager.friends(loginManager.getVkId(), 0, 100, "proximityAndNumber")));
+        model.addAttribute("users", om.writeValueAsString(mainManager.friends(loginManager.getVkId(), 0, 100, "proximityAndNumber", new String[0])));
         model.addAttribute("interests", om.writeValueAsString(mainManager.interests()));
         
         return "friends";
@@ -127,8 +127,9 @@ public class CommonController {
     public @ResponseBody List<User> friends(ModelMap model,
                            @RequestParam(value= "offset", defaultValue = "") int offset,
                            @RequestParam(value= "count", defaultValue = "") int count,
-                           @RequestParam(value= "sortType", defaultValue = "") String sortType) throws IOException, InterruptedException {
-        return mainManager.friends(loginManager.getVkId(), offset, count, sortType);
+                           @RequestParam(value= "sortType", defaultValue = "") String sortType,
+                           @RequestParam(value= "interests", defaultValue = "") String interests) throws IOException, InterruptedException {
+        return mainManager.friends(loginManager.getVkId(), offset, count, sortType, interests.split("\t"));
     }
     
 //    @RequestMapping(value="/couples", method = RequestMethod.GET)

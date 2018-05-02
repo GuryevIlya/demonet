@@ -1,6 +1,7 @@
 com\mycompany\tinder2\service\LinkManager.class
 com\mycompany\tinder2\service\LoginManager.class
 com\mycompany\tinder2\service\AuthFilter.class
+com\mycompany\tinder2\model\vk\CommonFriends.class
 com\mycompany\tinder2\service\BackgroundProcessManager.class
 com\mycompany\tinder2\model\vk\Couple.class
 com\mycompany\tinder2\model\vk\GroupVK.class
@@ -16,9 +17,11 @@ com\mycompany\tinder2\model\vk\WallPost.class
 com\mycompany\tinder2\model\vk\Items.class
 com\mycompany\tinder2\service\UserManager$1.class
 com\mycompany\demonet\uploading\GroupsUploading.class
+com\mycompany\tinder2\service\UsersUploader.class
 com\mycompany\tinder2\model\vk\WallPostResponce.class
 com\mycompany\tinder2\service\VectorManager.class
 com\mycompany\tinder2\model\vk\UserResponse.class
+com\mycompany\tinder2\service\LinkManager$6.class
 com\mycompany\tinder2\model\vk\GroupResponce.class
 com\mycompany\tinder2\model\vk\CopyHistory.class
 com\mycompany\tinder2\service\CompatibilityManager.class
@@ -34,6 +37,7 @@ com\mycompany\tinder2\service\MainManager$2.class
 com\mycompany\tinder2\service\UserManager.class
 com\mycompany\tinder2\model\pages\FriendsPage.class
 com\mycompany\tinder2\model\vk\Country.class
+com\mycompany\tinder2\service\LinkManager$7.class
 com\mycompany\tinder2\service\MainManager.class
 com\mycompany\tinder2\model\vk\Response.class
 com\mycompany\tinder2\service\VkDAO$2.class

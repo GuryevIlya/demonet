@@ -11,7 +11,7 @@ public class Group {
     private String Name;
     private String description;
     private Integer id;
-    private Map<String, Integer> vallVector = new HashMap<String, Integer>();
+    private Map<String, Integer> wallVector = new HashMap<String, Integer>();
 
     public String getName() {
         return Name;
@@ -26,7 +26,7 @@ public class Group {
     }
 
     public Map<String, Integer> getVallVector() {
-        return vallVector;
+        return wallVector;
     }
 
     public void setName(String Name) {
@@ -41,7 +41,7 @@ public class Group {
         this.id = id;
     }
 
-    public void setVallVector(Map<String, Integer> vallVector) {
-        this.vallVector = vallVector;
+    public void setWallVector(Map<String, Integer> vallVector) {
+        this.wallVector = vallVector;
     }
 }

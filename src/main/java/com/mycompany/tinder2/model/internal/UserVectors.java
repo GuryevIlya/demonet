@@ -1,8 +1,9 @@
 package com.mycompany.tinder2.model.internal;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -18,12 +19,26 @@ public class UserVectors {
     private Map<String, Integer> wallTextVector;
     private Map<String, Integer> wallMediaVector;
     private Map<String, Integer> wallHelpRepostVector;
+    private Set<String> groupNames = new HashSet<String>();
     private List<Group> groups;
     
 
+    
+    public UserVectors(){
+    }
+    
     public UserVectors(Integer id){
         this.id = id;
     }
+
+    public Set<String> getGroupNames() {
+        return groupNames;
+    }
+
+    public void setGroupNames(Set<String> groupNames) {
+        this.groupNames = groupNames;
+    }
+    
     
     public Integer getId() {
         return id;
@@ -105,6 +120,21 @@ public class UserVectors {
 
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+    
+    public boolean isInterest(String interest){
+        for(String group: groupNames){
+            if(group.contains(interest)){
+                return true;
+            }
+        }
+        
+        for(String item: infoVector.keySet()){
+            if(item.contains(interest)){
+                return true;
+            }
+        }
+        return false;
     }
     
 }

@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -71,12 +72,23 @@ public class Utils {
     }
     
     
+    public static List<Integer> first(Collection<Integer> source, int count){
+        List<Integer> result = new ArrayList<Integer>();
+        
+        List<Integer> intermediate = new ArrayList<Integer>(source);
+        Collections.sort(intermediate);
+        for(int i = 0; i < count; i++){
+            result.add(intermediate.get(i));
+        }        
+                
+        return result;
+    }
+    
     public static void main(String[] args){
         Object o1 = new Integer(1);
         Object o2 = new Integer(2);
         
         int t = 3;
-        
         
         Object o3 = new Double(1);
         Object o4 = new Double(2);
