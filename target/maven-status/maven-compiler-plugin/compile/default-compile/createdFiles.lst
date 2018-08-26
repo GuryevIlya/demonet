@@ -1,6 +1,7 @@
 com\mycompany\tinder2\service\LinkManager.class
 com\mycompany\tinder2\service\LoginManager.class
 com\mycompany\tinder2\service\AuthFilter.class
+pergift\CommonClass.class
 com\mycompany\tinder2\model\vk\CommonFriends.class
 com\mycompany\tinder2\service\BackgroundProcessManager.class
 com\mycompany\tinder2\model\vk\Couple.class
@@ -29,6 +30,7 @@ com\mycompany\tinder2\service\MainManager$1.class
 com\mycompany\tinder2\model\pages\User.class
 com\mycompany\tinder2\model\vk\VKResponse.class
 com\mycompany\tinder2\service\Utils.class
+pergift\CommonClass$2.class
 com\mycompany\tinder2\service\VkDAO$1.class
 com\mycompany\tinder2\model\internal\Stat.class
 com\mycompany\tinder2\service\UserManager$2.class
@@ -38,6 +40,7 @@ com\mycompany\tinder2\service\UserManager.class
 com\mycompany\tinder2\model\pages\FriendsPage.class
 com\mycompany\tinder2\model\vk\Country.class
 com\mycompany\tinder2\service\LinkManager$7.class
+pergift\CommonClass$1.class
 com\mycompany\tinder2\service\MainManager.class
 com\mycompany\tinder2\model\vk\Response.class
 com\mycompany\tinder2\service\VkDAO$2.class

@@ -45,13 +45,13 @@ public class CommonController {
     UserManager userManager;
     
     
-    private String VK_AUTH_URL = "https://oauth.vk.com/authorize?client_id=6318506&display=page&redirect_uri=http://tinder2.com:8080/Tinder2/access_token?&scope=friends&response_type=code&v=5.52";
+    private String VK_AUTH_URL = "https://oauth.vk.com/authorize?client_id=6318506&display=page&redirect_uri=http://tinder2.com:8080/Tinder2/access_token?&scope=friends,groups&response_type=code&v=5.52";
     
     @RequestMapping(value="/", method = RequestMethod.GET)
     public  String start(HttpServletRequest request) throws IOException, InterruptedException {
        // compatibilityManager.processCommonFriendsCount(loginManager.getVkId());
     //  compatibilityManager.processCompatibility(loginManager.getVkId(), linkManager.friendsOfFriends(loginManager.getVkId()).keySet());
-   // return "redirect:" + VK_AUTH_URL; 
+    return "redirect:" + VK_AUTH_URL; 
     //   return "newjsp";
 
      //  ObjectMapper objectMapper = new ObjectMapper();
@@ -76,7 +76,7 @@ public class CommonController {
 //        ids = new ArrayList<Integer>();
 //     }
 //        userManager.user(44187843);
-      return "redirect:friendsPage";  
+  //    return "redirect:friendsPage";  
     }
     
     @RequestMapping(value="/code", method = RequestMethod.GET)

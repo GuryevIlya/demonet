@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserManager {
    @Autowired
-   LoginManager loginManager;
+   LoginManager loginManager = new LoginManager();
    @Autowired
    VectorManager vectorManager;
    @Autowired
@@ -92,7 +92,7 @@ public class UserManager {
     }
    
     
-    private List<WallPost> wallPosts(Integer userId, int offset, int count) throws IOException{
+    public List<WallPost> wallPosts(Integer userId, int offset, int count) throws IOException{
         String filter = "all";
         String fields = "text";
         

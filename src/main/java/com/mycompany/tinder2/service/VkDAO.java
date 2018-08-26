@@ -80,7 +80,7 @@ public class VkDAO {
     
     public String[] idAndAccessToken(String code) throws Exception {
         String[] result = new String[2];
-        String url = "https://oauth.vk.com/access_token?client_id=" + APP_CODE + "&client_secret=" + CLIENT_SECRET + "&redirect_uri=http://tinder2.com:8080/Tinder2/access_token?&code=" + code;
+        String url = "https://oauth.vk.com/access_token?&scope=friends,groups&client_id=" + APP_CODE + "&client_secret=" + CLIENT_SECRET + "&redirect_uri=http://tinder2.com:8080/Tinder2/access_token?&code=" + code;
 
         
 
