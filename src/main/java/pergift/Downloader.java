@@ -27,8 +27,9 @@ import org.apache.commons.io.FileUtils;
  *
  * @author delet
  */
-public class CommonClass {
-    private static final String targetDir = "C:\\gifts";
+public class Downloader {
+    public static final String MYWISHLIST_DIR = "C:\\gifts\\mywishlist\\raw_posts";
+    public static final String MYWISHBOARD_DIR = "C:\\gifts\\mywishboard\\raw_posts";
     LoginManager loginManager = new LoginManager();
     
     public Set<Integer> groupMembers(Integer groupId) throws IOException{
@@ -47,7 +48,8 @@ public class CommonClass {
         }
     }
     
-    public List<String> posts(Date startDate, Date endDate, String query) throws IOException{
+    public List<String> posts(Date startDate, Date endDate, String query) throws IOException, InterruptedException{
+        Thread.currentThread().sleep(350);
         List<String> result = new ArrayList<String>();
         
         String startFrom = null;
@@ -75,19 +77,22 @@ public class CommonClass {
         return result;
     }
     
-    public void downloadPosts(Date startDateP, String query) throws IOException{
+    public void downloadPosts(Date startDateP, String query, String targetDir) throws IOException, InterruptedException{
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Set<String> downloaded = new HashSet<String>(Arrays.asList(new File(targetDir).list()));
+        Date currentDate = new Date();
         Date startDate = startDateP;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDateP);
         calendar.add(Calendar.MONTH, 2);
         Date endDate = calendar.getTime();
         
-        
-        while(endDate.compareTo(new Date()) < 0){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        while(endDate.compareTo(currentDate) < 0){
             String fileName = sdf.format(startDate) + "-" + sdf.format(endDate);
             if(downloaded.contains(fileName)){
+                startDate = endDate;
+                calendar.add(Calendar.MONTH, 2);
+                endDate = calendar.getTime();
                 continue;
             }
             for(String post: posts(startDate, endDate, query)){
@@ -98,7 +103,9 @@ public class CommonClass {
             calendar.add(Calendar.MONTH, 2);
             endDate = calendar.getTime();
         }
-        
+        for(String post: posts(startDate, currentDate, query)){
+            FileUtils.write(new File(targetDir, sdf.format(startDate) + "-" + sdf.format(currentDate)), post + "\n", "utf-8", true);
+        }
         
         
         
@@ -106,10 +113,11 @@ public class CommonClass {
     }
     
     
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException, InterruptedException {
        
-        CommonClass cc = new CommonClass();
-        cc.downloadPosts(new SimpleDateFormat("yyyyMMddhhmmss").parse("20100101000000"), "mywishlist");
-    
+        Downloader cc = new Downloader();
+      //  cc.downloadPosts(new SimpleDateFormat("yyyyMMddhhmmss").parse("20100101000000"), "mywishlist", MYWISHLIST_DIR);
+        cc.downloadPosts(new SimpleDateFormat("yyyyMMddhhmmss").parse("20121101000000"), "mywishboard", MYWISHBOARD_DIR);
+   // cc.posts(new SimpleDateFormat("yyyyMMddhhmmss").parse("20180107000000"), new Date(), "mywishboard");
     }
 }
