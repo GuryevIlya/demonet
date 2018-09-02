@@ -32,22 +32,6 @@ public class Downloader {
     public static final String MYWISHBOARD_DIR = "C:\\gifts\\mywishboard\\raw_posts";
     LoginManager loginManager = new LoginManager();
     
-    public Set<Integer> groupMembers(Integer groupId) throws IOException{
-        String url = "https://api.vk.com/method/groups.getMembers?v=5.52&access_token=" + loginManager.getAccessToken() + 
-                        "&group_id=" + groupId + "&fields=description";
-        String responseJSON = Utils.getRequest(url);
-       
-        ObjectMapper objectMapper = new ObjectMapper();
-        VKResponse<Integer> response = (VKResponse<Integer>) objectMapper.readValue(responseJSON, new TypeReference<VKResponse<Integer>>(){});
-
-        if(response.getResponse() != null){
-          //  FileUtils.write(new File("C:\\demonetData\\user2groups.txt"), userId + "\t" + objectMapper.writeValueAsString(response.getResponse().getItems()) + "\n", "utf-8", true);
-            return new HashSet<Integer>(response.getResponse().getItems());
-        }else{
-            return null;
-        }
-    }
-    
     public List<String> posts(Date startDate, Date endDate, String query) throws IOException, InterruptedException{
         Thread.currentThread().sleep(350);
         List<String> result = new ArrayList<String>();

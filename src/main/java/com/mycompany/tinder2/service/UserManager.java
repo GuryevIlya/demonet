@@ -266,7 +266,7 @@ public class UserManager {
             }
         }
         
-        String fields = "about,activities,bdate,books,city,country,education,games,home_town,interests,sex,photo_100";
+        String fields = "id,about,activities,bdate,books,city,country,education,games,home_town,interests,sex,photo_100";
         String url = "https://api.vk.com/method/users.get?v=5.71&access_token=" + loginManager.getAccessToken() + "&user_ids=" + StringUtils.join(missingUserIds.toArray(), ",") + "&fields=" + fields;
         
         String request = Utils.getRequest(url);
